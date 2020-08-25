@@ -1,4 +1,8 @@
-﻿using System.Windows;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
+using System.Windows;
+using System.Windows.Documents;
 using CalcLogic;
 
 namespace CalcDesktop
@@ -154,8 +158,7 @@ namespace CalcDesktop
                         Calculator.Multiply(CurrentValue);
                         break;
                 }
-
-                ResetResult();
+                SaveOperationToDb();
             }
         }
 
@@ -165,6 +168,49 @@ namespace CalcDesktop
             CurrentValue = 0;
             Operation = "";
             DisplayValue();
+        }
+
+        private void SaveOperationToDb()
+        {
+            using (var db = new CalculatorEntities())
+            {
+                db.Operations.Add(new CalcDesktop.Operation
+                {
+                    valueOne = StoredValue,
+                    valueTwo = CurrentValue,
+                    operation1 = Operation,
+                    result = Calculator.Result(),
+                });
+                db.SaveChanges();
+            }
+            ResetResult();
+        }
+
+        private List<Operation> LoadOperations()
+        {
+            using (var db = new CalculatorEntities())
+            {
+                return db.Operations.ToList();
+            }
+        }
+
+        private void LoadOperationsAndDisplay()
+        {
+            var ops = LoadOperations();
+            Thread.Sleep(2000);
+            Dispatcher.Invoke(() =>
+            {
+                OperationsListView.ItemsSource = ops;
+            });
+        }
+
+        private void LoadBtn_Click(object sender, RoutedEventArgs e)
+        {
+            Thread t = new Thread(() =>
+            {
+                LoadOperationsAndDisplay();
+            });
+            t.Start();
         }
     }
 }

@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CalcDesktop"
         mc:Ignorable="d"
-        Title="MainWindow" Height="500" Width="400">
+        Title="MainWindow" Height="800" Width="400">
     <Grid>
         <StackPanel>
             <Grid Height="50" Background="Teal">
@@ -71,6 +71,17 @@
             </Grid>
             <Button x:Name="ClearBtn" Height="20" Background="#0F000000"  FontWeight="Bold" Click="ClearBtn_Click">C</Button>
             <Button x:Name="CalculateBtn" Height="30" Background="Teal" Foreground="White" Margin="25" Click="CalculateBtn_Click">Calculate</Button>
+            <Button x:Name="LoadBtn" Height="30" Background="Teal" Foreground="White" Margin="25,0,25,25" Click="LoadBtn_Click">Load</Button>
+            <ListView x:Name="OperationsListView">
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn Header="Value1" DisplayMemberBinding="{Binding valueOne}"></GridViewColumn>
+                        <GridViewColumn Header="Value2" DisplayMemberBinding="{Binding valueTwo}"></GridViewColumn>
+                        <GridViewColumn Header="Operation" DisplayMemberBinding="{Binding operation1}"></GridViewColumn>
+                        <GridViewColumn Header="Result" DisplayMemberBinding="{Binding result}"></GridViewColumn>
+                    </GridView>
+                </ListView.View>
+            </ListView>
         </StackPanel>
     </Grid>
 </Window>
