@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading;
 using System.Windows;
 using System.Windows.Documents;
+using System.Windows.Media.Animation;
 using CalcLogic;
 
 namespace CalcDesktop
@@ -206,6 +207,8 @@ namespace CalcDesktop
 
         private void LoadBtn_Click(object sender, RoutedEventArgs e)
         {
+            var animation = (Storyboard)FindResource("LoadingAnimation");
+            animation.Begin();
             Thread t = new Thread(() =>
             {
                 LoadOperationsAndDisplay();
